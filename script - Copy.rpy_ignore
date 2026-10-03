@@ -1,0 +1,260 @@
+﻿# The script of the game goes in this file.
+
+# Declare characters used by this game. The color argument colorizes the
+# name of the character.
+
+define e = Character("Eileen")
+
+image head = "owl head.png"
+image cheeks = "cheeks.png"
+image neck = "neck.png"
+image torso = "owl body.png"
+image boob1 = "owl boob.png"
+image boob2 = "owl boob.png"
+image stomach = "owl stomach.png"
+image arm1 = "owl arm.png"
+image arm2 = "owl arm.png"
+image leg1 = "owl leg.png"
+image leg2 = "owl leg.png"
+
+define x_width = 2
+
+#standard scale
+define s = 0.47
+
+#temp scale for when showing bounces
+define tsx = 0.47
+define tsy = 0.47
+
+#bounce phases 1, 2, 3
+define b1 = 0.125
+define b2 = 0.025
+define b3 = 0.0125
+
+#total bounce time
+define bt = 1.5
+
+#define b1 = 0.25
+#define b2 = 0.125
+#define b3 = 0.025
+
+#boob, stomach, leg fat
+define bf = 1
+define sf = 1
+define lf = 1
+
+#for fatten animation
+define x_0 = 0.47
+define x_1 = 0.47
+define x_2 = 0.47
+define x_3 = 0.47
+define x_4 = 0.47
+define x_5 = 0.47
+define y_0 = 0.47
+define y_1 = 0.47
+define y_2 = 0.47
+define y_3 = 0.47
+define y_4 = 0.47
+define y_5 = 0.47
+
+# The game starts here.
+
+transform slide_right(time, width, height):
+    center
+    linear time xzoom (1 - (width / 2)) yzoom (1 + (height / 2)) center
+    linear time xzoom (1 + (width / 2)) yzoom (1 - (height / 2))
+
+#init python:
+#    def testFunction():
+#        show test at slide_right(0.3, 4)
+
+label start:
+
+    # Show a background. This uses a placeholder by default, but you can
+    # add a file (named either "bg room.png" or "bg room.jpg") to the
+    # images directory to show it.
+
+    scene bg room
+
+    # This shows a character sprite. A placeholder is used, but you can
+    # replace it by adding a file named "eileen happy.png" to the images
+    # directory.
+
+    show head at owlHead
+    #show cheeks at standard
+    #show neck at standard
+    show arm1 at owlArmLeft
+    show arm2 at owlArmRight
+    show torso at owlBody
+    show leg1 at owlLegLeft
+    show leg2 at owlLegRight
+    show stomach at owlStomach
+    show boob1 at owlBoobLeft
+    show boob2 at owlBoobRight
+
+    jump interaction
+
+    # pause
+
+    # This ends the game.
+
+    return
+
+label interaction:
+
+    $ tsx = s
+    $ tsy = s
+
+    menu:
+
+        "What do?"
+
+        "Bounce boobs":
+
+            window hide
+            show boobs at bounce
+            pause bt
+
+        "Bounce belly":
+
+            window hide
+            show stomach at bounce
+            pause bt
+
+        "Bounce legs":
+
+            window hide
+            show legs at bounce
+            pause bt
+
+        "Fatten boobs":
+
+            call fatten("boobs")
+
+        "Fatten belly":
+
+            call fatten("stomach")
+
+        "Fatten legs":
+
+            call fatten("legs")
+
+    jump interaction
+
+#    pause
+
+label fatten(part):
+    window hide
+    if part == "boobs":
+        $ x_0 = s * bf
+        #$ y_0 = s * bf
+        $ bf += 0.2
+        $ tsx = float(s * bf)
+        $ x_5 = tsx
+        #$ y_5 = tsx
+        $ x_1 = (4 * (x_0 / 5)) + (1 * (x_5 / 5))
+        $ x_2 = (3 * (x_0 / 5)) + (2 * (x_5 / 5))
+        $ x_3 = (2 * (x_0 / 5)) + (3 * (x_5 / 5))
+        $ x_4 = (1 * (x_0 / 5)) + (4 * (x_5 / 5))
+        #$ y_1 = (4 * (y_0 / 5)) + (1 * (y_5 / 5))
+        #$ y_2 = (3 * (y_0 / 5)) + (2 * (y_5 / 5))
+        #$ y_3 = (2 * (y_0 / 5)) + (3 * (y_5 / 5))
+        #$ y_4 = (1 * (y_0 / 5)) + (4 * (y_5 / 5))
+        show boobs at fatten
+        pause bt
+    elif part == "stomach":
+        $ x_0 = s * sf
+        #$ y_0 = s * bf
+        $ sf += 0.2
+        $ tsx = float(s * sf)
+        $ x_5 = tsx
+        #$ y_5 = tsx
+        $ x_1 = (4 * (x_0 / 5)) + (1 * (x_5 / 5))
+        $ x_2 = (3 * (x_0 / 5)) + (2 * (x_5 / 5))
+        $ x_3 = (2 * (x_0 / 5)) + (3 * (x_5 / 5))
+        $ x_4 = (1 * (x_0 / 5)) + (4 * (x_5 / 5))
+        #$ y_1 = (4 * (y_0 / 5)) + (1 * (y_5 / 5))
+        #$ y_2 = (3 * (y_0 / 5)) + (2 * (y_5 / 5))
+        #$ y_3 = (2 * (y_0 / 5)) + (3 * (y_5 / 5))
+        #$ y_4 = (1 * (y_0 / 5)) + (4 * (y_5 / 5))
+        show stomach at fatten
+        pause bt
+    elif part == "legs":
+        $ x_0 = s * lf
+        #$ y_0 = s * lf
+        $ lf += 0.2
+        $ tsx = float(s * lf)
+        $ x_5 = tsx
+        #$ y_5 = tsx
+        $ x_1 = (4 * (x_0 / 5)) + (1 * (x_5 / 5))
+        $ x_2 = (3 * (x_0 / 5)) + (2 * (x_5 / 5))
+        $ x_3 = (2 * (x_0 / 5)) + (3 * (x_5 / 5))
+        $ x_4 = (1 * (x_0 / 5)) + (4 * (x_5 / 5))
+        #$ y_1 = (4 * (y_0 / 5)) + (1 * (y_5 / 5))
+        #$ y_2 = (3 * (y_0 / 5)) + (2 * (y_5 / 5))
+        #$ y_3 = (2 * (y_0 / 5)) + (3 * (y_5 / 5))
+        #$ y_4 = (1 * (y_0 / 5)) + (4 * (y_5 / 5))
+        show legs at fatten
+        pause bt
+
+transform fatten:
+
+    xzoom x_0 yzoom y_0 center
+
+    linear (1 * (bt / 20)) xzoom (x_0 - b1*x_0) yzoom (y_0 + b1*y_0)
+
+    linear (3 * (bt / 20)) xzoom (x_1 + b1*x_1) yzoom (y_1 - b1*y_1)
+
+    linear (3 * (bt / 20)) xzoom (x_2 - b2*x_2) yzoom (y_2 + b2*y_2)
+    linear (3 * (bt / 20)) xzoom (x_3 + b2*x_3) yzoom (y_3 - b2*y_3)
+
+    linear (3 * (bt / 20)) xzoom (x_4 - b3*x_4) yzoom (y_4 + b3*y_4)
+    linear (3 * (bt / 20)) xzoom (x_5 + b3*x_5) yzoom (y_5 - b3*y_5)
+
+    linear (4 * (bt / 20)) xzoom x_5 yzoom y_5
+
+transform standard:
+    xzoom tsx yzoom tsy center
+
+transform owlHead:
+    xzoom tsx yzoom tsy xalign 0.5 yalign 0.15
+
+transform owlBody:
+    xzoom tsx yzoom tsy xalign 0.5 yalign 0.7
+
+transform owlArmLeft:
+    xzoom tsx yzoom tsy xalign 0.335 yalign 1.02
+
+transform owlArmRight:
+    xzoom (-1 * tsx) yzoom tsy xalign 0.66 yalign 1.02
+
+transform owlLegLeft:
+    xzoom tsx yzoom tsy xalign 0.43 yalign 1.02
+
+transform owlLegRight:
+    xzoom (-1 * tsx) yzoom tsy xalign 0.56 yalign 1.02
+
+transform owlStomach:
+    xzoom (-1 * tsx) yzoom tsy xalign 0.495 yalign 0.785 alpha 0.1
+
+transform owlBoobLeft:
+    xzoom tsx yzoom tsy xalign 0.45 yalign 0.59
+
+transform owlBoobRight:
+    xzoom (-1 * tsx) yzoom tsy xalign 0.546 yalign 0.59
+
+transform bounce:
+
+    xzoom tsx yzoom tsy center
+
+    linear (bt / 20) xzoom (tsx - b1*tsx) yzoom (tsy + b1*tsy)
+
+    linear (3 * bt / 20) xzoom (tsx + b1*tsx) yzoom (tsy - b1*tsy)
+
+    linear (3 * bt / 20) xzoom (tsx - b2*tsx) yzoom (tsy + b2*tsy)
+    linear (3 * bt / 20) xzoom (tsx + b2*tsx) yzoom (tsy - b2*tsy)
+
+    linear (3 * bt / 20) xzoom (tsx - b3*tsx) yzoom (tsy + b3*tsy)
+    linear (3 * bt / 20) xzoom (tsx + b3*tsx) yzoom (tsy - b3*tsy)
+
+    linear (bt / 5) xzoom tsx yzoom tsy
